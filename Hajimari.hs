@@ -18,6 +18,9 @@ module Hajimari
   , Enum(succ, pred, toEnum, fromEnum, enumFrom, enumFromThen,
          enumFromTo, enumFromThenTo)
   , Bounded(minBound, maxBound)
+  , Countable(length)
+  , Null(null)
+  , Reversable(reverse)
   -- Numbers.
   , Int, Integer, Word
   , Float, Double, Rational
@@ -46,9 +49,6 @@ module Hajimari
   , id, const, (.), flip, ($)
   , undefined
   , seq, ($!) -- Careful with these. Use when strictness is required.
-  , length
-  -- List functions.
-  , null, reverse
   )
 where
 
@@ -99,4 +99,3 @@ instance Reversable ByteString.ByteString where
   reverse = ByteString.reverse
 instance Reversable Text.Text where
   reverse = Text.reverse
-  
