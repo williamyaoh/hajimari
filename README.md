@@ -10,5 +10,5 @@ and which parts aren't. So don't rely too heavily on this having
 a consistent interface.
 
 At the very least, breaking interface changes will only happen on
-full version number changes. Additions to the interface can happen
-whenever.
+full version number and secondary version number changes. Adding
+to the interface can happen on any change.
