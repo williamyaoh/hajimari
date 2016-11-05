@@ -49,53 +49,91 @@ module Hajimari
   , id, const, (.), flip, ($)
   , undefined
   , seq, ($!) -- Careful with these. Use when strictness is required.
+  -- Special folds and list traverals
+  , and, or, any, all
+  , scanl, scanl1, scanr, scanr1
+  -- Infinite lists
+  , iterate, repeat, replicate, cycleMay, cycleSafe
   )
 where
 
-import Prelude hiding (length, null, reverse)
-import Data.ByteString.Lazy hiding (length, null, reverse)
-import Data.Text.Lazy hiding (length, null, reverse)
+-- We've tried to unify the interfaces across Lists, ByteStrings,
+-- and Text as best we can. However, some just aren't unifiable
+-- because List is a type constructor and ByteStrings and Text aren't,
+-- so the type signatures don't work out.
 
-import qualified Prelude as Prelude (length, null, reverse)
-import qualified Data.ByteString.Lazy as ByteString 
-  ( ByteString
-  , length
+-- `length', `null', and `reverse' will work across all three.
+-- With the others, we prioritized exporting the list versions from
+-- Prelude.
+
+import Prelude hiding (length, null, reverse)
+import Data.ByteString.Lazy hiding 
+  ( length
   , null
   , reverse
+  , repeat, replicate, iterate
+  , scanl
+  , any, all
   )
-import qualified Data.Text.Lazy as Text 
-  ( Text
-  , length
+import Data.Text.Lazy hiding 
+  ( length
   , null
   , reverse
+  , repeat, replicate, iterate
+  , scanr, scanr1, scanl, scanl1
+  , any, all
   )
+
+import qualified Prelude as Prelude 
+import qualified Data.ByteString.Lazy as BS
+import qualified Data.Text.Lazy as T 
 
 class Countable a where
   length :: Integral b => a -> b
 
 instance Countable [a] where
   length = fromIntegral . Prelude.length
-instance Countable ByteString.ByteString where
-  length = fromIntegral . ByteString.length
-instance Countable Text.Text where
-  length = fromIntegral . Text.length
+instance Countable ByteString where
+  length = fromIntegral . BS.length
+instance Countable Text where
+  length = fromIntegral . T.length
 
 class Null a where
   null :: a -> Bool
 
 instance Null [a] where
   null = Prelude.null
-instance Null ByteString.ByteString where
-  null = ByteString.null
-instance Null Text.Text where
-  null = Text.null
+instance Null ByteString where
+  null = BS.null
+instance Null Text where
+  null = T.null
 
 class Reversable a where
   reverse :: a -> a
 
 instance Reversable [a] where
   reverse = Prelude.reverse
-instance Reversable ByteString.ByteString where
-  reverse = ByteString.reverse
-instance Reversable Text.Text where
-  reverse = Text.reverse
+instance Reversable ByteString where
+  reverse = BS.reverse
+instance Reversable Text where
+  reverse = T.reverse
+
+class Repeatable a where
+  cycleMay :: a -> Maybe a
+  cycleSafe :: a -> a
+
+instance Repeatable [a] where
+  cycleMay [] = Nothing
+  cycleMay l  = Just $ Prelude.cycle l
+  cycleSafe [] = []
+  cycleSafe l  = Prelude.cycle l
+instance Repeatable ByteString where
+  cycleMay s | null s    = Nothing
+             | otherwise = Just $ BS.cycle s
+  cycleSafe s | null s    = BS.empty
+              | otherwise = BS.cycle s
+instance Repeatable Text where
+  cycleMay s | null s    = Nothing
+             | otherwise = Just $ T.cycle s
+  cycleSafe s | null s    = T.empty
+              | otherwise = T.cycle s
