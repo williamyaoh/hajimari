@@ -54,6 +54,15 @@ module Hajimari
   , scanl, scanl1, scanr, scanr1
   -- Infinite lists
   , iterate, repeat, replicate, cycleMay, cycleSafe
+  -- Sublists
+  , take, drop, splitAt, takeWhile, dropWhile, span, break
+  -- Searching
+  , notElem, lookup
+  -- Zipping/unzipping lists
+  , zip, zip3, zipWith, zipWith3, unzip, unzip3
+  -- String functions
+  , lines, words, unlines, unwords
+  -- Show and Read (converting to and from strings)
   )
 where
 
@@ -74,6 +83,9 @@ import Data.ByteString.Lazy hiding
   , repeat, replicate, iterate
   , scanl
   , any, all
+  , take, drop, splitAt, takeWhile, dropWhile, span, break
+  , notElem
+  , zip, zipWith, unzip
   )
 import Data.Text.Lazy hiding 
   ( length
@@ -82,6 +94,9 @@ import Data.Text.Lazy hiding
   , repeat, replicate, iterate
   , scanr, scanr1, scanl, scanl1
   , any, all
+  , take, drop, splitAt, takeWhile, dropWhile, span, break
+  , zip, zipWith
+  , lines, words, unlines, unwords
   )
 
 import qualified Prelude as Prelude 
