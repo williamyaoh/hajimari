@@ -69,6 +69,16 @@ module Hajimari
   , showChar, showParen
   , Read
   , readMay, readDef
+  -- Simple I\/O.
+  , IO
+  , putChar
+  , putStr, putStrLn, print
+  , getChar
+  , getLine, getContents, interact
+  -- Files
+  , FilePath
+  , readFile, writeFile, appendFile, readIO, readLn
+  , IOError, ioError, userError
   )
 where
 
@@ -85,7 +95,14 @@ where
 
 import Safe
 
-import Prelude hiding (length, null, reverse)
+import Prelude hiding 
+  ( length
+  , null
+  , reverse
+  , putStr, putStrLn
+  , getLine, getContents, interact
+  , readFile, writeFile, appendFile
+  )
 import Data.ByteString.Lazy hiding 
   ( length
   , null
@@ -111,6 +128,7 @@ import Data.Text.Lazy hiding
 
 import qualified Prelude as Prelude 
 import qualified Data.ByteString.Lazy as BS
+import qualified Data.ByteString.Lazy.Char8 as BS8
 import qualified Data.Text.Lazy as T 
 
 class Countable a where
@@ -162,3 +180,7 @@ instance Repeatable Text where
              | otherwise = Just $ T.cycle s
   cycleSafe s | null s    = T.empty
               | otherwise = T.cycle s
+
+-- Function that's in Data.ByteString but not in Data.ByteString.Lazy
+getLine :: IO ByteString
+getLine = BS8.pack <$> Prelude.getLine
