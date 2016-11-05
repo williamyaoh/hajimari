@@ -90,8 +90,11 @@ where
 -- `length', `null', and `reverse' will work across all three.
 -- `cycleMaybe' and `cycleSafe' are safe variants of `cycle', which
 -- also work on all three data types.
--- With the others, we prioritized exporting the list versions from
--- Prelude.
+
+-- With the traversing and folding functions, we prioritized exporting
+-- the list versions from Prelude.
+
+-- For IO, we prioritized ByteString versions.
 
 import Safe
 
