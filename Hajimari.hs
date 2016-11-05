@@ -11,7 +11,7 @@ module Hajimari
   , Ordering(LT, EQ, GT)
   , fst, snd, curry, uncurry
   -- Strings and Text.
-  , ByteString, Text
+  , Char, ByteString, Text
   -- Some basic typeclasses.
   , Eq((==), (/=))
   , Ord(compare, (<), (<=), (>=), (>), max, min)
@@ -63,6 +63,12 @@ module Hajimari
   -- String functions
   , lines, words, unlines, unwords
   -- Show and Read (converting to and from strings)
+  , ShowS
+  , Show(showsPrec, showList, show)
+  , shows
+  , showChar, showParen
+  , Read
+  , readMay, readDef
   )
 where
 
@@ -76,6 +82,8 @@ where
 -- also work on all three data types.
 -- With the others, we prioritized exporting the list versions from
 -- Prelude.
+
+import Safe
 
 import Prelude hiding (length, null, reverse)
 import Data.ByteString.Lazy hiding 

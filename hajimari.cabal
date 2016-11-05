@@ -60,6 +60,7 @@ library
   build-depends:       base >=4.8 && <4.9
                      , bytestring >= 0.10
                      , text >= 1.2
+                     , safe >= 0.3
   
   -- Directories containing source files.
   -- hs-source-dirs:      
