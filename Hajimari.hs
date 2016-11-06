@@ -53,7 +53,7 @@ module Hajimari
   , and, or, any, all
   , scanl, scanl1, scanr, scanr1
   -- Infinite lists
-  , iterate, repeat, replicate, cycleMay, cycleSafe
+  , iterate, repeat, replicate, cycleMay, cycleDef, cycleSafe
   -- Sublists
   , take, drop, splitAt, takeWhile, dropWhile, span, break
   -- Searching
@@ -166,21 +166,28 @@ instance Reversable Text where
 
 class Repeatable a where
   cycleMay :: a -> Maybe a
+  cycleDef :: a -> a -> a
   cycleSafe :: a -> a
 
 instance Repeatable [a] where
   cycleMay [] = Nothing
   cycleMay l  = Just $ Prelude.cycle l
+  cycleDef def [] = def
+  cycleDef _ l    = Prelude.cycle l
   cycleSafe [] = []
   cycleSafe l  = Prelude.cycle l
 instance Repeatable ByteString where
   cycleMay s | null s    = Nothing
              | otherwise = Just $ BS.cycle s
+  cycleDef def s | null s    = def
+                 | otherwise = BS.cycle s
   cycleSafe s | null s    = BS.empty
               | otherwise = BS.cycle s
 instance Repeatable Text where
   cycleMay s | null s    = Nothing
              | otherwise = Just $ T.cycle s
+  cycleDef def s | null s    = def
+                 | otherwise = T.cycle s
   cycleSafe s | null s    = T.empty
               | otherwise = T.cycle s
 
