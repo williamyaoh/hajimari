@@ -10,7 +10,7 @@ name:                hajimari
 -- PVP summary:      +-+------- breaking API changes
 --                   | | +----- non-breaking API additions
 --                   | | | +--- code changes with no API change
-version:             0.1.0.0
+version:             0.1.2.0
 
 -- A short (one-line) description of the package.
 synopsis:            Custom Prelude by William Yao.
@@ -61,6 +61,7 @@ library
                      , bytestring >= 0.10
                      , text >= 1.2
                      , safe >= 0.3
+                     , array >= 0.5 && <0.6
   
   -- Directories containing source files.
   -- hs-source-dirs:      

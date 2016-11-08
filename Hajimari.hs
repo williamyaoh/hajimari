@@ -79,6 +79,11 @@ module Hajimari
   , FilePath
   , readFile, writeFile, appendFile, readIO, readLn
   , IOError, ioError, userError
+  -- Arrays. Incredibly unsafe, so use these with caution.
+  -- However, necessary for doing a lot of things efficiently.
+  , array, listArray, accumArray
+  , (!), (//), accum, ixmap
+  , bounds, indices, elems, assocs
   )
 where
 
@@ -133,6 +138,8 @@ import qualified Prelude as Prelude
 import qualified Data.ByteString.Lazy as BS
 import qualified Data.ByteString.Lazy.Char8 as BS8
 import qualified Data.Text.Lazy as T 
+
+import Data.Array
 
 class Countable a where
   length :: Integral b => a -> b
